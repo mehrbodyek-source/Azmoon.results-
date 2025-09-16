@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fa">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>اعلام نتایج آزمون</title>
+  <style>
+    body {
+      font-family: Tahoma, "Vazir", sans-serif;
+      direction: rtl;
+      background:#f2f4f7;
+      margin:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100vh;
+    }
+    .card {
+      background:#fff;
+      padding:26px;
+      border-radius:10px;
+      box-shadow:0 8px 26px rgba(0,0,0,0.08);
+      width:500px;
+      max-width:95%;
+      box-sizing:border-box;
+      text-align:right;
+    }
+    h2{text-align:center;margin-bottom:20px}
+    label{display:block;margin:10px 0 6px}
+    input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
+    button{padding:10px 14px;border:none;border-radius:8px;background:#1976d2;color:#fff;cursor:pointer;font-size:15px}
+    .full-btn{width:100%}
+    table{width:100%;border-collapse:collapse;margin-top:15px}
+    th,td{border:1px solid #ccc;padding:10px;text-align:center}
+    th{background:#f7f7f7}
+    .green{color:green;font-weight:700}
+    .red{color:red;font-weight:700}
+    .center{text-align:center}
+    .logout{background:#c62828}
+    .no-print{display:inline-block}
+    @media print {
+      .no-print{display:none!important}
+      body{background:#fff}
+      .card{box-shadow:none;border:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card"></div>
+
+  <script>
+    const VALID_USERNAME = "Mehrbod@1385";
+    const VALID_PASSWORD = "8713147";
+
+    const resultHTML = `
+    <p>قبولی شما با کد داوطلبی ۱۰۶۸۸۱۹ به شرح ذیل می‌باشد:</p>
+    <table>
+      <tr>
+        <th>اولویت</th>
+        <th>رشته / واحد</th>
+        <th>وضعیت</th>
+      </tr>
+      <tr>
+        <td>اول</td>
+        <td>مهندسی کامپیوتر (تهران واحد علوم تحقیقات)</td>
+        <td class="red">عدم قبولی</td>
+      </tr>
+      <tr>
+        <td>دوم</td>
+        <td>علوم کامپیوتر (تهران واحد علوم تحقیقات)</td>
+        <td class="red">عدم قبولی</td>
+      </tr>
+      <tr>
+        <td>سوم</td>
+        <td>مهندسی کامپیوتر (مشهد)</td>
+        <td class="green">قبول</td>
+      </tr>
+    </table>`;
+
+    const card = document.getElementById("card");
+
+    function showLogin() {
+      card.innerHTML = `
+        <h2>ورود به سامانه اعلام نتایج</h2>
+        <label>نام کاربری</label>
+        <input id="username" type="text">
+        <label>رمز عبور</label>
+        <input id="password" type="password">
+        <div style="margin-top:14px">
+          <button id="loginBtn" class="full-btn">ورود</button>
+        </div>
+      `;
+      document.getElementById("loginBtn").onclick = tryLogin;
+    }
+
+    function tryLogin() {
+      const u = document.getElementById("username").value.trim();
+      const p = document.getElementById("password").value;
+      if (u === VALID_USERNAME && p === VALID_PASSWORD) {
+        showWelcome();
+      } else {
+        alert("نام کاربری یا رمز عبور نادرست است.");
+      }
+    }
+
+    function showWelcome() {
+      card.innerHTML = `
+        <div class="center">
+          <h2>مهربد یک کلام خوش آمدید</h2>
+          <button id="viewBtn" style="margin-top:20px">مشاهده نتایج</button>
+          <div style="margin-top:12px">
+            <button id="backBtn" style="background:#777">بازگشت</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("viewBtn").onclick = showResults;
+      document.getElementById("backBtn").onclick = showLogin;
+    }
+
+    function showResults() {
+      card.innerHTML = `
+        <h2 class="center">نتیجه آزمون</h2>
+        <div>${resultHTML}</div>
+        <div class="center" style="margin-top:20px">
+          <button id="printBtn" class="no-print" style="background:#388e3c;margin-left:10px">چاپ نتایج</button>
+          <button id="logoutBtn" class="logout no-print">خروج</button>
+        </div>
+      `;
+      document.getElementById("printBtn").onclick = () => window.print();
+      document.getElementById("logoutBtn").onclick = showLogin;
+    }
+
+    showLogin();
+  </script>
+</body>
+</html>
